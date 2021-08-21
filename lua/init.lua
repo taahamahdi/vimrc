@@ -42,7 +42,7 @@ require('packer').startup(function()
   use 'tpope/vim-repeat'
   use 'nvim-telescope/telescope-fzf-native.nvim'
 
-  use 'aurieh/discord.nvim'
+  use 'ObserverOfTime/discord.nvim'
   use 'plasticboy/vim-markdown'
   use 'junegunn/fzf.vim'
   use 'lingnand/pandoc-preview.vim'

@@ -157,6 +157,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/cool/.local/share/nvim/site/pack/packer/start/vim-markdown"
   },
+  ["vim-obsession"] = {
+    loaded = true,
+    path = "/home/cool/.local/share/nvim/site/pack/packer/start/vim-obsession"
+  },
   ["vim-repeat"] = {
     loaded = true,
     path = "/home/cool/.local/share/nvim/site/pack/packer/start/vim-repeat"
