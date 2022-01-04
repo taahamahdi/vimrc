@@ -6,13 +6,13 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 
 vim.api.nvim_exec(
-  [[
-  augroup Packer
-    autocmd!
-    autocmd BufWritePost init.lua PackerCompile
-  augroup end
+[[
+augroup Packer
+autocmd!
+autocmd BufWritePost init.lua PackerCompile
+augroup end
 ]],
-  false
+false
 )
 
 local use = require('packer').use
@@ -45,9 +45,17 @@ require('packer').startup(function()
   use 'ObserverOfTime/discord.nvim'
   use 'plasticboy/vim-markdown'
   use 'junegunn/fzf.vim'
-  use 'lingnand/pandoc-preview.vim'
+  use 'taahamahdi/pandoc-preview.vim'
   use 'jiangmiao/auto-pairs'
   use 'tpope/vim-obsession'
+  use 'heavenshell/vim-jsdoc'
+  use 'williamboman/nvim-lsp-installer'
+  use 'udalov/kotlin-vim'
+  use 'godlygeek/tabular'
+  use 'github/copilot.vim'
+  use { "folke/trouble.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
+  use 'junegunn/goyo.vim'
+  use 'lewis6991/impatient.nvim'
 end)
 
 --Incremental live completion
@@ -142,13 +150,13 @@ vim.api.nvim_set_keymap('n', '<leader>?', [[<cmd>lua require('telescope.builtin'
 
 -- Highlight on yank
 vim.api.nvim_exec(
-  [[
-  augroup YankHighlight
-    autocmd!
-    autocmd TextYankPost * silent! lua vim.highlight.on_yank()
-  augroup end
+[[
+augroup YankHighlight
+autocmd!
+autocmd TextYankPost * silent! lua vim.highlight.on_yank()
+augroup end
 ]],
-  false
+false
 )
 
 -- Y yank until the end of line
@@ -164,7 +172,7 @@ local on_attach = function(_, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+--  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
@@ -185,13 +193,13 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- Enable the following language servers
-local servers = { 'clangd', 'rust_analyzer', 'pyright', 'tsserver' }
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-  }
-end
+-- local servers = { 'rust_analyzer', 'pyright', 'tsserver' }
+-- for _, lsp in ipairs(servers) do
+--   nvim_lsp[lsp].setup {
+--     on_attach = on_attach,
+--     capabilities = capabilities,
+--   }
+-- end
 
 -- Example custom server
 -- local sumneko_root_path = vim.fn.getenv("HOME").."/.local/bin/sumneko_lua" -- Change to your sumneko root installation
@@ -353,3 +361,21 @@ vim.api.nvim_set_keymap('i', '<c-space>', 'compe#complete()', { expr = true })
 
 require'lspconfig'.ccls.setup{}
 require'lspconfig'.tsserver.setup{}
+require'lspconfig'.eslint.setup{}
+require'lspconfig'.jsonls.setup{}
+
+-- nvim-lsp-installer
+local lsp_installer = require("nvim-lsp-installer")
+
+lsp_installer.on_server_ready(function(server)
+  local opts = {}
+
+  -- (optional) Customize the options passed to the server
+  -- if server.name == "tsserver" then
+  --     opts.root_dir = function() ... end
+  -- end
+
+  -- This setup() function is exactly the same as lspconfig's setup function (:help lspconfig-quickstart)
+  server:setup(opts)
+  vim.cmd [[ do User LspAttachBuffers ]]
+end)

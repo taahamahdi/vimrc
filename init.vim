@@ -1,3 +1,4 @@
+lua require("impatient")
 lua require("init")
 
 set number relativenumber
@@ -5,7 +6,7 @@ set number
 
 vnoremap  <leader>y  "+y
 
-" :W sudo saves the file 
+" :W sudo saves the file
 " (useful for handling the permission-denied error)
 command W w !sudo tee % > /dev/null
 
@@ -56,6 +57,12 @@ autocmd BufWritePre * :%s/\s\+$//e
 " inoremap ` ``<left>
 " inoremap ``` ```<cr>```<esc>O
 
+filetype plugin indent on
+set shiftwidth=4
+set tabstop=4
+set expandtab
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vim-codefmt
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -83,7 +90,7 @@ set rtp+=/usr/local/opt/fzf
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Pandoc Preview
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:pandoc_preview_pdf_cmd = "zathura" 
+let g:pandoc_preview_pdf_cmd = "zathura"
 nnoremap <leader>- :PandocCompile<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
