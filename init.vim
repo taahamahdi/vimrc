@@ -24,6 +24,7 @@ map <C-l> <C-W>l
 
 " Close the current buffer
 map <leader>bd :bd<cr>
+map <leader>bc :BufferClose<cr>
 
 " Useful mappings for managing tabs
 map <leader>tn :tabnew<cr>
@@ -106,3 +107,11 @@ nnoremap <leader>- :PandocCompile<cr>
 let g:vim_markdown_folding_disabled = 1
 let g:tex_conceal = ""
 let g:vim_markdown_math = 1
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => minimap.vim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:minimap_auto_start = 0
+let g:minimap_git_colors = 1
+let g:minimap_highlight_range = 1
+let g:minimap_highlight_search = 1

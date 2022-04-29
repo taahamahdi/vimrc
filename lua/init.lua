@@ -21,10 +21,10 @@ require('packer').startup(function()
   use 'tpope/vim-fugitive' -- Git commands in nvim
   use 'tpope/vim-rhubarb' -- Fugitive-companion to interact with github
   use 'tpope/vim-commentary' -- "gc" to comment visual regions/lines
-  use 'ludovicchabant/vim-gutentags' -- Automatic tags management
   -- UI to select things (files, grep results, open buffers...)
   use { 'nvim-telescope/telescope.nvim', requires = { { 'nvim-lua/popup.nvim' }, { 'nvim-lua/plenary.nvim' } } }
   use 'joshdick/onedark.vim' -- Theme inspired by Atom
+  -- use 'ishan9299/modus-theme-vim'
   use 'itchyny/lightline.vim' -- Fancier statusline
   -- Add indentation guides even on blank lines
   use 'lukas-reineke/indent-blankline.nvim'
@@ -42,7 +42,7 @@ require('packer').startup(function()
   use 'tpope/vim-repeat'
   use 'nvim-telescope/telescope-fzf-native.nvim'
 
-  use 'ObserverOfTime/discord.nvim'
+  use { 'ObserverOfTime/discord.nvim', branch = 'refactored' }
   use 'plasticboy/vim-markdown'
   use 'junegunn/fzf.vim'
   use 'taahamahdi/pandoc-preview.vim'
@@ -56,13 +56,16 @@ require('packer').startup(function()
   use { "folke/trouble.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
   use 'junegunn/goyo.vim'
   use 'lewis6991/impatient.nvim'
+  use 'romgrk/nvim-treesitter-context'
+  -- use 'romgrk/barbar.nvim'
+  use 'wfxr/minimap.vim'
 end)
 
 --Incremental live completion
 vim.o.inccommand = 'nosplit'
 
 --Set highlight on search
-vim.o.hlsearch = false
+-- vim.o.hlsearch = false
 
 --Make line numbers default
 -- vim.wo.number = true
@@ -91,9 +94,11 @@ vim.wo.signcolumn = 'yes'
 vim.o.termguicolors = true
 vim.g.onedark_terminal_italics = 2
 vim.cmd [[colorscheme onedark]]
+-- vim.cmd [[colorscheme modus-operandi]]
 
 --Set statusbar
 vim.g.lightline = {
+  -- colorscheme = 'one',
   colorscheme = 'onedark',
   active = { left = { { 'mode', 'paste' }, { 'gitbranch', 'readonly', 'filename', 'modified' } } },
   component_function = { gitbranch = 'fugitive#head' },
@@ -116,15 +121,7 @@ vim.g.indent_blankline_char_highlight = 'LineNr'
 vim.g.indent_blankline_show_trailing_blankline_indent = false
 
 -- Gitsigns
-require('gitsigns').setup {
-  signs = {
-    add = { hl = 'GitGutterAdd', text = '+' },
-    change = { hl = 'GitGutterChange', text = '~' },
-    delete = { hl = 'GitGutterDelete', text = '_' },
-    topdelete = { hl = 'GitGutterDelete', text = '‾' },
-    changedelete = { hl = 'GitGutterChange', text = '~' },
-  },
-}
+require('gitsigns').setup {}
 
 -- Telescope
 require('telescope').setup {
@@ -359,10 +356,10 @@ vim.api.nvim_set_keymap('s', '<S-Tab>', 'v:lua.s_tab_complete()', { expr = true 
 vim.api.nvim_set_keymap('i', '<cr>', 'compe#confirm("<cr>")', { expr = true })
 vim.api.nvim_set_keymap('i', '<c-space>', 'compe#complete()', { expr = true })
 
-require'lspconfig'.ccls.setup{}
-require'lspconfig'.tsserver.setup{}
+-- require'lspconfig'.ccls.setup{}
+-- require'lspconfig'.tsserver.setup{}
 require'lspconfig'.eslint.setup{}
-require'lspconfig'.jsonls.setup{}
+-- require'lspconfig'.jsonls.setup{}
 
 -- nvim-lsp-installer
 local lsp_installer = require("nvim-lsp-installer")
