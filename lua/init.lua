@@ -45,6 +45,7 @@ require('packer').startup(function()
   use { 'ObserverOfTime/discord.nvim', branch = 'refactored' }
   use 'plasticboy/vim-markdown'
   use 'junegunn/fzf.vim'
+  use 'junegunn/fzf'
   use 'taahamahdi/pandoc-preview.vim'
   use 'jiangmiao/auto-pairs'
   use 'tpope/vim-obsession'
@@ -58,7 +59,7 @@ require('packer').startup(function()
   use 'lewis6991/impatient.nvim'
   use 'romgrk/nvim-treesitter-context'
   -- use 'romgrk/barbar.nvim'
-  use 'wfxr/minimap.vim'
+  -- use 'wfxr/minimap.vim'
 end)
 
 --Incremental live completion
