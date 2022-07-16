@@ -40,6 +40,7 @@ require('packer').startup(function()
 
   use 'tpope/vim-sleuth'
   use 'tpope/vim-repeat'
+  use 'tpope/vim-surround'
   use 'nvim-telescope/telescope-fzf-native.nvim'
 
   use { 'ObserverOfTime/discord.nvim', branch = 'refactored' }
