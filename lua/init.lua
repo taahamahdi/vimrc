@@ -341,7 +341,9 @@ require("nvim-lsp-installer").setup({
     }
 })
 
-require'lspconfig'.ccls.setup{}
+-- require'lspconfig'.ccls.setup{}
 require'lspconfig'.tsserver.setup{}
 require'lspconfig'.eslint.setup{}
 require'lspconfig'.jsonls.setup{}
+require'lspconfig'.ltex.setup{}
+require'lspconfig'.marksman.setup{}
