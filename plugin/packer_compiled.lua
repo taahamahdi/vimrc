@@ -79,15 +79,30 @@ _G.packer_plugins = {
     path = "/Users/taahamahdi/.local/share/nvim/site/pack/packer/start/auto-pairs",
     url = "https://github.com/jiangmiao/auto-pairs"
   },
+  ["cmp-buffer"] = {
+    loaded = true,
+    path = "/Users/taahamahdi/.local/share/nvim/site/pack/packer/start/cmp-buffer",
+    url = "https://github.com/hrsh7th/cmp-buffer"
+  },
+  ["cmp-nvim-lsp"] = {
+    loaded = true,
+    path = "/Users/taahamahdi/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp",
+    url = "https://github.com/hrsh7th/cmp-nvim-lsp"
+  },
+  cmp_luasnip = {
+    loaded = true,
+    path = "/Users/taahamahdi/.local/share/nvim/site/pack/packer/start/cmp_luasnip",
+    url = "https://github.com/saadparwaiz1/cmp_luasnip"
+  },
   ["copilot.vim"] = {
     loaded = true,
     path = "/Users/taahamahdi/.local/share/nvim/site/pack/packer/start/copilot.vim",
     url = "https://github.com/github/copilot.vim"
   },
-  ["discord.nvim"] = {
+  ["friendly-snippets"] = {
     loaded = true,
-    path = "/Users/taahamahdi/.local/share/nvim/site/pack/packer/start/discord.nvim",
-    url = "https://github.com/ObserverOfTime/discord.nvim"
+    path = "/Users/taahamahdi/.local/share/nvim/site/pack/packer/start/friendly-snippets",
+    url = "https://github.com/rafamadriz/friendly-snippets"
   },
   fzf = {
     loaded = true,
@@ -129,15 +144,15 @@ _G.packer_plugins = {
     path = "/Users/taahamahdi/.local/share/nvim/site/pack/packer/start/lightline.vim",
     url = "https://github.com/itchyny/lightline.vim"
   },
-  ["nvim-compe"] = {
+  ["mason.nvim"] = {
     loaded = true,
-    path = "/Users/taahamahdi/.local/share/nvim/site/pack/packer/start/nvim-compe",
-    url = "https://github.com/hrsh7th/nvim-compe"
+    path = "/Users/taahamahdi/.local/share/nvim/site/pack/packer/start/mason.nvim",
+    url = "https://github.com/williamboman/mason.nvim"
   },
-  ["nvim-lsp-installer"] = {
+  ["nvim-cmp"] = {
     loaded = true,
-    path = "/Users/taahamahdi/.local/share/nvim/site/pack/packer/start/nvim-lsp-installer",
-    url = "https://github.com/williamboman/nvim-lsp-installer"
+    path = "/Users/taahamahdi/.local/share/nvim/site/pack/packer/start/nvim-cmp",
+    url = "https://github.com/hrsh7th/nvim-cmp"
   },
   ["nvim-lspconfig"] = {
     loaded = true,
@@ -188,6 +203,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/taahamahdi/.local/share/nvim/site/pack/packer/start/popup.nvim",
     url = "https://github.com/nvim-lua/popup.nvim"
+  },
+  ["presence.nvim"] = {
+    loaded = true,
+    path = "/Users/taahamahdi/.local/share/nvim/site/pack/packer/start/presence.nvim",
+    url = "https://github.com/andweeb/presence.nvim"
   },
   tabular = {
     loaded = true,

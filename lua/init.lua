@@ -35,15 +35,19 @@ require('packer').startup(function()
   -- Additional textobjects for treesitter
   use 'nvim-treesitter/nvim-treesitter-textobjects'
   use 'neovim/nvim-lspconfig' -- Collection of configurations for built-in LSP client
-  use 'hrsh7th/nvim-compe' -- Autocompletion plugin
+  use 'hrsh7th/nvim-cmp' -- Autocompletion plugin
+  use 'hrsh7th/cmp-nvim-lsp'
+  use 'hrsh7th/cmp-buffer'
   use 'L3MON4D3/LuaSnip' -- Snippets plugin
+  use 'saadparwaiz1/cmp_luasnip'
+  use 'rafamadriz/friendly-snippets'
 
   use 'tpope/vim-sleuth'
   use 'tpope/vim-repeat'
   use 'tpope/vim-surround'
   use 'nvim-telescope/telescope-fzf-native.nvim'
 
-  use { 'ObserverOfTime/discord.nvim', branch = 'refactored' }
+  use 'andweeb/presence.nvim'
   use 'plasticboy/vim-markdown'
   use 'junegunn/fzf.vim'
   use 'junegunn/fzf'
@@ -51,7 +55,7 @@ require('packer').startup(function()
   use 'jiangmiao/auto-pairs'
   use 'tpope/vim-obsession'
   use 'heavenshell/vim-jsdoc'
-  use 'williamboman/nvim-lsp-installer'
+  use 'williamboman/mason.nvim'
   use 'udalov/kotlin-vim'
   use 'godlygeek/tabular'
   use 'github/copilot.vim'
@@ -188,18 +192,6 @@ local on_attach = function(_, bufnr)
   vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
 end
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-
--- Enable the following language servers
--- local servers = { 'rust_analyzer', 'pyright', 'tsserver' }
--- for _, lsp in ipairs(servers) do
---   nvim_lsp[lsp].setup {
---     on_attach = on_attach,
---     capabilities = capabilities,
---   }
--- end
-
 -- Example custom server
 -- local sumneko_root_path = vim.fn.getenv("HOME").."/.local/bin/sumneko_lua" -- Change to your sumneko root installation
 -- local sumneko_binary = sumneko_root_path .. '/bin/linux/lua-language-server'
@@ -262,76 +254,58 @@ require('nvim-treesitter.configs').setup {
   },
 }
 
--- Set completeopt to have a better completion experience
-vim.o.completeopt = 'menuone,noselect'
+vim.o.completeopt = 'menu,menuone,noselect'
 
--- Compe setup
-require('compe').setup {
-  source = {
-    path = true,
-    nvim_lsp = true,
-    luasnip = true,
-    buffer = false,
-    calc = false,
-    nvim_lua = false,
-    vsnip = false,
-    ultisnips = false,
+-- Setup nvim-cmp.
+local cmp = require'cmp'
+
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+    end,
   },
-}
+  window = {
+    completion = cmp.config.window.bordered(),
+    -- documentation = cmp.config.window.bordered(),
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
 
--- Utility functions for compe and luasnip
-local t = function(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
+    ['<Tab>'] = cmp.mapping(cmp.mapping.select_next_item()),
+    ['<S-Tab>'] = cmp.mapping(cmp.mapping.select_prev_item()),
+  }),
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+  }, {
+    { name = 'buffer' },
+  })
+})
+
+require("luasnip.loaders.from_vscode").lazy_load()
+
+-- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+-- capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+-- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+-- Enable the following language servers
+local servers = { 'tsserver', 'eslint', 'jsonls', 'ltex', 'marksman', 'intelephense' }
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+  }
 end
 
-local check_back_space = function()
-  local col = vim.fn.col '.' - 1
-  if col == 0 or vim.fn.getline('.'):sub(col, col):match '%s' then
-    return true
-  else
-    return false
-  end
-end
-
--- Use (s-)tab to:
---- move to prev/next item in completion menuone
---- jump to prev/next snippet's placeholder
-local luasnip = require 'luasnip'
-
-_G.tab_complete = function()
-  if vim.fn.pumvisible() == 1 then
-    return t '<C-n>'
-  elseif luasnip.expand_or_jumpable() then
-    return t '<Plug>luasnip-expand-or-jump'
-  elseif check_back_space() then
-    return t '<Tab>'
-  else
-    return vim.fn['compe#complete']()
-  end
-end
-
-_G.s_tab_complete = function()
-  if vim.fn.pumvisible() == 1 then
-    return t '<C-p>'
-  elseif luasnip.jumpable(-1) then
-    return t '<Plug>luasnip-jump-prev'
-  else
-    return t '<S-Tab>'
-  end
-end
-
--- Map tab to the above tab complete functiones
-vim.api.nvim_set_keymap('i', '<Tab>', 'v:lua.tab_complete()', { expr = true })
-vim.api.nvim_set_keymap('s', '<Tab>', 'v:lua.tab_complete()', { expr = true })
-vim.api.nvim_set_keymap('i', '<S-Tab>', 'v:lua.s_tab_complete()', { expr = true })
-vim.api.nvim_set_keymap('s', '<S-Tab>', 'v:lua.s_tab_complete()', { expr = true })
-
--- Map compe confirm and complete functions
-vim.api.nvim_set_keymap('i', '<cr>', 'compe#confirm("<cr>")', { expr = true })
-vim.api.nvim_set_keymap('i', '<c-space>', 'compe#complete()', { expr = true })
-
-require("nvim-lsp-installer").setup({
-    automatic_installation = true, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
+require("mason").setup({
     ui = {
         icons = {
             server_installed = "✓",
@@ -341,9 +315,10 @@ require("nvim-lsp-installer").setup({
     }
 })
 
--- require'lspconfig'.ccls.setup{}
-require'lspconfig'.tsserver.setup{}
-require'lspconfig'.eslint.setup{}
-require'lspconfig'.jsonls.setup{}
-require'lspconfig'.ltex.setup{}
-require'lspconfig'.marksman.setup{}
+require("presence"):setup({})
+
+-- remap copilot
+vim.keymap.set('i', '<C-.>', '<Plug>(copilot-next)')
+vim.keymap.set('i', '<C-,>', '<Plug>(copilot-previous)')
+vim.keymap.set('i', '<Right>', 'copilot#Accept()', { expr = true })
+vim.g.copilot_no_tab_map = true
