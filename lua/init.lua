@@ -63,6 +63,7 @@ require('packer').startup(function()
   use 'junegunn/goyo.vim'
   use 'lewis6991/impatient.nvim'
   use 'romgrk/nvim-treesitter-context'
+  use 'jose-elias-alvarez/null-ls.nvim'
   -- use 'romgrk/barbar.nvim'
   -- use 'wfxr/minimap.vim'
 end)
@@ -322,3 +323,19 @@ vim.keymap.set('i', '<C-.>', '<Plug>(copilot-next)')
 vim.keymap.set('i', '<C-,>', '<Plug>(copilot-previous)')
 vim.keymap.set('i', '<Right>', 'copilot#Accept()', { expr = true })
 vim.g.copilot_no_tab_map = true
+
+-- null-ls
+local null_ls = require("null-ls")
+local sources = {
+    null_ls.builtins.code_actions.proselint,
+    null_ls.builtins.code_actions.eslint_d,
+    null_ls.builtins.diagnostics.write_good,
+    null_ls.builtins.diagnostics.markdownlint,
+    null_ls.builtins.diagnostics.misspell,
+    null_ls.builtins.formatting.prettier,
+    null_ls.builtins.diagnostics.alex,
+    null_ls.builtins.code_actions.gitsigns,
+    null_ls.builtins.diagnostics.codespell,
+}
+
+null_ls.setup({ sources = sources })
