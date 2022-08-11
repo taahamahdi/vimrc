@@ -38,6 +38,8 @@ map <leader>q :e ~/Documents/scratch/buffer.md<cr>
 try
     set undodir=~/.config/nvim/undodir
     set undofile
+    set backupdir=~/.config/nvim/backupdir
+    set backup
 catch
 endtry
 
