@@ -321,7 +321,7 @@ require("presence"):setup({})
 -- remap copilot
 vim.keymap.set('i', '<C-.>', '<Plug>(copilot-next)')
 vim.keymap.set('i', '<C-,>', '<Plug>(copilot-previous)')
-vim.keymap.set('i', '<Right>', 'copilot#Accept()', { expr = true })
+vim.keymap.set('i', '<Right>', 'copilot#Accept()', { expr = true, replace_keycodes = false })
 vim.g.copilot_no_tab_map = true
 
 -- null-ls
