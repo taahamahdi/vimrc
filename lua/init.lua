@@ -64,6 +64,9 @@ require('packer').startup(function()
   use 'lewis6991/impatient.nvim'
   use 'romgrk/nvim-treesitter-context'
   use 'jose-elias-alvarez/null-ls.nvim'
+  use 'jay-babu/mason-null-ls.nvim'
+  use 'google/vim-maktaba'
+  use 'google/vim-codefmt'
   -- use 'romgrk/barbar.nvim'
   -- use 'wfxr/minimap.vim'
 end)
@@ -298,11 +301,20 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 -- Enable the following language servers
-local servers = { 'tsserver', 'eslint', 'jsonls', 'ltex', 'marksman', 'intelephense' }
+local servers = { 'tsserver', 'eslint', 'jsonls', 'ltex', 'marksman', 'intelephense', 'ccls' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
     capabilities = capabilities,
+  }
+end
+
+for _, lsp in ipairs({ 'clangd' }) do
+  nvim_lsp[lsp].setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    -- cmd = { 'clangd', '--std=c++17' }
+    cmd = { 'clangd', '--std=c17' }
   }
 end
 
@@ -321,7 +333,7 @@ require("presence"):setup({})
 -- remap copilot
 vim.keymap.set('i', '<C-.>', '<Plug>(copilot-next)')
 vim.keymap.set('i', '<C-,>', '<Plug>(copilot-previous)')
-vim.keymap.set('i', '<Right>', 'copilot#Accept()', { expr = true })
+vim.keymap.set('i', '<Right>', 'copilot#Accept()', { expr = true, replace_keycodes = false })
 vim.g.copilot_no_tab_map = true
 
 -- null-ls
