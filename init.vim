@@ -65,6 +65,7 @@ set shiftwidth=4
 set tabstop=4
 set expandtab
 
+set tabpagemax=250
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vim-codefmt

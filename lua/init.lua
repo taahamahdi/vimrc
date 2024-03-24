@@ -47,7 +47,7 @@ require('packer').startup(function()
   use 'tpope/vim-surround'
   use 'nvim-telescope/telescope-fzf-native.nvim'
 
-  use 'andweeb/presence.nvim'
+  use 'Maxb0tbeep/presence.nvim'
   use 'plasticboy/vim-markdown'
   use 'junegunn/fzf.vim'
   use 'junegunn/fzf'
@@ -350,3 +350,10 @@ local sources = {
 }
 
 null_ls.setup({ sources = sources })
+
+if vim.g.neovide then
+    vim.o.guifont = "Cascadia Code PL:h16"
+    vim.keymap.set({ "n", "v" }, "<C-+>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
+    vim.keymap.set({ "n", "v" }, "<C-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
+    vim.keymap.set({ "n" , "v" }, "<C-0>", ":lua vim.g.neovide_scale_factor = 1<CR>")
+end
