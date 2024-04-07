@@ -6,24 +6,24 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 
 vim.api.nvim_exec(
-[[
+  [[
 augroup Packer
 autocmd!
 autocmd BufWritePost init.lua PackerCompile
 augroup end
 ]],
-false
+  false
 )
 
 local use = require('packer').use
 require('packer').startup(function()
   use 'wbthomason/packer.nvim' -- Package manager
-  use 'tpope/vim-fugitive' -- Git commands in nvim
-  use 'tpope/vim-rhubarb' -- Fugitive-companion to interact with github
-  use 'tpope/vim-commentary' -- "gc" to comment visual regions/lines
+  use 'tpope/vim-fugitive'     -- Git commands in nvim
+  use 'tpope/vim-rhubarb'      -- Fugitive-companion to interact with github
+  use 'tpope/vim-commentary'   -- "gc" to comment visual regions/lines
   -- UI to select things (files, grep results, open buffers...)
   use { 'nvim-telescope/telescope.nvim', requires = { { 'nvim-lua/popup.nvim' }, { 'nvim-lua/plenary.nvim' } } }
-  use 'joshdick/onedark.vim' -- Theme inspired by Atom
+  use 'joshdick/onedark.vim'  -- Theme inspired by Atom
   use 'ishan9299/modus-theme-vim'
   use 'itchyny/lightline.vim' -- Fancier statusline
   -- Add indentation guides even on blank lines
@@ -34,7 +34,6 @@ require('packer').startup(function()
   use 'nvim-treesitter/nvim-treesitter'
   -- Additional textobjects for treesitter
   use 'nvim-treesitter/nvim-treesitter-textobjects'
-  use 'neovim/nvim-lspconfig' -- Collection of configurations for built-in LSP client
   use 'hrsh7th/nvim-cmp' -- Autocompletion plugin
   use 'hrsh7th/cmp-nvim-lsp'
   use 'hrsh7th/cmp-buffer'
@@ -56,6 +55,8 @@ require('packer').startup(function()
   use 'tpope/vim-obsession'
   use 'heavenshell/vim-jsdoc'
   use 'williamboman/mason.nvim'
+  use 'williamboman/mason-lspconfig.nvim'
+  use 'neovim/nvim-lspconfig' -- Collection of configurations for built-in LSP client
   use 'udalov/kotlin-vim'
   use 'godlygeek/tabular'
   use 'github/copilot.vim'
@@ -63,12 +64,8 @@ require('packer').startup(function()
   use 'junegunn/goyo.vim'
   use 'lewis6991/impatient.nvim'
   use 'romgrk/nvim-treesitter-context'
-  use 'jose-elias-alvarez/null-ls.nvim'
-  use 'jay-babu/mason-null-ls.nvim'
   use 'google/vim-maktaba'
   use 'google/vim-codefmt'
-  -- use 'romgrk/barbar.nvim'
-  -- use 'wfxr/minimap.vim'
 end)
 
 --Incremental live completion
@@ -145,65 +142,38 @@ require('telescope').setup {
   },
 }
 --Add leader shortcuts
-vim.api.nvim_set_keymap('n', '<leader><space>', [[<cmd>lua require('telescope.builtin').buffers()<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>sf', [[<cmd>lua require('telescope.builtin').find_files({previewer = false})<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>sb', [[<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>sh', [[<cmd>lua require('telescope.builtin').help_tags()<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>st', [[<cmd>lua require('telescope.builtin').tags()<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>sd', [[<cmd>lua require('telescope.builtin').grep_string()<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>sp', [[<cmd>lua require('telescope.builtin').live_grep()<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>so', [[<cmd>lua require('telescope.builtin').tags{ only_current_buffer = true }<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>?', [[<cmd>lua require('telescope.builtin').oldfiles()<CR>]], { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader><space>', [[<cmd>lua require('telescope.builtin').buffers()<CR>]],
+  { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>sf', [[<cmd>lua require('telescope.builtin').find_files({previewer = false})<CR>]],
+  { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>sb', [[<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>]],
+  { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>sh', [[<cmd>lua require('telescope.builtin').help_tags()<CR>]],
+  { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>st', [[<cmd>lua require('telescope.builtin').tags()<CR>]],
+  { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>sd', [[<cmd>lua require('telescope.builtin').grep_string()<CR>]],
+  { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>sp', [[<cmd>lua require('telescope.builtin').live_grep()<CR>]],
+  { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>so',
+  [[<cmd>lua require('telescope.builtin').tags{ only_current_buffer = true }<CR>]], { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>?', [[<cmd>lua require('telescope.builtin').oldfiles()<CR>]],
+  { noremap = true, silent = true })
 
 -- Highlight on yank
 vim.api.nvim_exec(
-[[
+  [[
 augroup YankHighlight
 autocmd!
 autocmd TextYankPost * silent! lua vim.highlight.on_yank()
 augroup end
 ]],
-false
+  false
 )
 
 -- Y yank until the end of line
 vim.api.nvim_set_keymap('n', 'Y', 'y$', { noremap = true })
-
--- LSP settings
-local nvim_lsp = require 'lspconfig'
-local on_attach = function(_, bufnr)
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  local opts = { noremap = true, silent = true }
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
---  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'v', '<leader>ca', '<cmd>lua vim.lsp.buf.range_code_action()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>q', '<cmd>lua vim.diagnostic.set_loclist()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>so', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]], opts)
-  vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
-end
-
--- Example custom server
--- local sumneko_root_path = vim.fn.getenv("HOME").."/.local/bin/sumneko_lua" -- Change to your sumneko root installation
--- local sumneko_binary = sumneko_root_path .. '/bin/linux/lua-language-server'
-
--- -- Make runtime files discoverable to the server
--- local runtime_path = vim.split(package.path, ';')
--- table.insert(runtime_path, 'lua/?.lua')
--- table.insert(runtime_path, 'lua/?/init.lua')
 
 -- Treesitter configuration
 -- Parsers must be installed manually via :TSInstall
@@ -261,7 +231,7 @@ require('nvim-treesitter.configs').setup {
 vim.o.completeopt = 'menu,menuone,noselect'
 
 -- Setup nvim-cmp.
-local cmp = require'cmp'
+local cmp = require 'cmp'
 
 cmp.setup({
   snippet = {
@@ -292,40 +262,56 @@ cmp.setup({
 })
 
 require("luasnip.loaders.from_vscode").lazy_load()
-
--- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
--- capabilities.textDocument.completion.completionItem.snippetSupport = true
-
--- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
--- Enable the following language servers
-local servers = { 'tsserver', 'eslint', 'jsonls', 'ltex', 'marksman', 'intelephense', 'ccls' }
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-  }
-end
-
-for _, lsp in ipairs({ 'clangd' }) do
-  nvim_lsp[lsp].setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-    -- cmd = { 'clangd', '--std=c++17' }
-    cmd = { 'clangd', '--std=c17' }
-  }
-end
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 require("mason").setup({
-    ui = {
-        icons = {
-            server_installed = "✓",
-            server_pending = "➜",
-            server_uninstalled = "✗"
-        }
+})
+
+require("mason-lspconfig").setup()
+require("mason-lspconfig").setup_handlers {
+  function(server_name)
+    require("lspconfig")[server_name].setup {
+      capabilities = capabilities
     }
+  end
+}
+
+-- Global mappings.
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
+
+-- Use LspAttach autocommand to only map the following keys
+-- after the language server attaches to the current buffer
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+  callback = function(ev)
+    -- Enable completion triggered by <c-x><c-o>
+    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+
+    -- Buffer local mappings.
+    -- See `:help vim.lsp.*` for documentation on any of the below functions
+    local opts = { buffer = ev.buf }
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+    vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+    vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+    vim.keymap.set('n', '<space>wl', function()
+      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, opts)
+    vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
+    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
+    vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+    vim.keymap.set('n', '<space>f', function()
+      vim.lsp.buf.format { async = true }
+    end, opts)
+  end,
 })
 
 require("presence"):setup({})
@@ -336,24 +322,17 @@ vim.keymap.set('i', '<C-,>', '<Plug>(copilot-previous)')
 vim.keymap.set('i', '<Right>', 'copilot#Accept()', { expr = true, replace_keycodes = false })
 vim.g.copilot_no_tab_map = true
 
--- null-ls
-local null_ls = require("null-ls")
-local sources = {
-    null_ls.builtins.code_actions.proselint,
-    null_ls.builtins.code_actions.eslint_d,
-    null_ls.builtins.diagnostics.write_good,
-    null_ls.builtins.diagnostics.misspell,
-    null_ls.builtins.formatting.prettier,
-    null_ls.builtins.diagnostics.alex,
-    null_ls.builtins.code_actions.gitsigns,
-    null_ls.builtins.diagnostics.codespell,
-}
-
-null_ls.setup({ sources = sources })
-
 if vim.g.neovide then
-    vim.o.guifont = "Cascadia Code PL:h16"
-    vim.keymap.set({ "n", "v" }, "<C-+>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
-    vim.keymap.set({ "n", "v" }, "<C-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
-    vim.keymap.set({ "n" , "v" }, "<C-0>", ":lua vim.g.neovide_scale_factor = 1<CR>")
+  vim.o.guifont = "Cascadia Code PL:h16"
+  vim.keymap.set({ "n", "v" }, "<C-+>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
+  vim.keymap.set({ "n", "v" }, "<C-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
+  vim.keymap.set({ "n", "v" }, "<C-0>", ":lua vim.g.neovide_scale_factor = 1<CR>")
+
+  -- Allow clipboard copy paste in neovim
+  vim.g.neovide_input_use_logo = 1
+  vim.api.nvim_set_keymap('', '<D-v>', '+p<CR>', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap('!', '<D-v>', '<C-R>+', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap('t', '<D-v>', '<C-R>+', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap('v', '<D-v>', '<C-R>+', { noremap = true, silent = true })
 end
+
