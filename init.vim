@@ -1,4 +1,3 @@
-lua require("impatient")
 lua require("init")
 
 set number relativenumber
